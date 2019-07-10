@@ -1,0 +1,15 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        {% block footer_right %}
+            <!--<b>Version</b> {% block version %}0.1b{% endblock %}-->
+        {% endblock %}
+    </div>
+
+    {% block footer_left %}
+    {% block legal %}
+    <strong>Copyright &copy;InStandart LLC {% now "Y" %}
+    </strong> All rights
+    reserved.
+    {% endblock %}
+    {% endblock %}
+</footer>

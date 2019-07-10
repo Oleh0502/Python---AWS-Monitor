@@ -1,0 +1,14 @@
+{% extends 'adminlte/lib/_main_sidebar.html' %}
+{% load adminlte_helpers %}
+
+{% block user_panel %}
+{% endblock %}
+{% block nav_links %}
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            <li id="DashBoardPageLink"><a href="/"><i class="fa fa-dashboard"></i><span>Home</span></a></li>
+{#            <li id="DashBoardPageLink" class="{% add_active 'dashboard:dashboard' %}"><a href="{% url 'dashboard:dashboard'%}"><i class="fa fa-dashboard"></i><span>DashBoard</span></a></li>#}
+{#            <li class="{% add_active 'invoices:invoices' %}"><a href="{% url 'invoices:invoices'%}"><i class="fa fa-file-excel-o"></i><span>Invoices</span></a></li>#}
+        </ul>
+    </section>
+{% endblock nav_links %}

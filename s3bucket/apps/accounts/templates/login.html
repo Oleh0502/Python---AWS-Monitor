@@ -1,0 +1,38 @@
+{% extends "adminlte/login.html" %}
+{% block title %}Sign In{% endblock %}
+{% block logo %}
+<div class="login-logo">
+    <a href="{% block logo_href %}/{% endblock %}">{% block logo_text %}<b>S3 Bucket</b>{% endblock %}</a>
+</div>
+{% endblock %}
+{% block login_form %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if message %}
+                <p class="login-box-msg" style="color: red;">{{ message }}</p>
+            {% endif %}
+            <div class="form-group has-feedback">
+                <input name="username" class="form-control" placeholder="Email">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                </div>
+
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign in</button>
+                </div>
+                <div class="clearfix">
+                    <div class="separator text-center" >
+                        <p class="change_link">Forgot your password?</p>
+                         <a href="{% url 'accounts:password_reset' %}" class="to_restore">Restore password</a>
+                        <div class="clearfix"></div>&nbsp;</div>
+                        <br />
+                    </div>
+            </div>
+        </form>
+{% endblock login_form %}

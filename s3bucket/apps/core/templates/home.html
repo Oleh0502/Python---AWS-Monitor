@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+{% endblock %}
+
+
+{% block content_wrapper %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="bucket_datatable">
+                                    <thead>
+                                    <tr>
+                                        <th>Bucket Name</th>
+                                        <th>Active</th>
+                                        <th>Details</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#bucket_datatable').dataTable({
+                "bServerSide": true,
+                "ajax": "/ajax/bucket_list",
+                "bProcessing": true,
+                "bSortable": false,
+                "bSearch": false,
+                "ordering": false,
+                "sDom": 'lrtip',
+                "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+                "iDisplayLength": 10,
+                "aoColumnDefs": [
+                    {
+                        "mRender": function (data, type, row) {
+                            return "<b>" + data + "</b>"
+                        },
+                        "aTargets": [0], "width": "60%"},
+                    {
+                        "mRender": function (data, type, row) {
+                            if (data) {
+                                row.status_filter = "<i style='color: green' class='fa fa-check-circle'></i>"
+                            }
+                            else {
+                                row.status_filter = "<i style='color: red' class='fa fa-minus-circle'></i>"
+                            }
+                            return row.status_filter
+                        },
+                        "aTargets": [1], "width": "20%"},
+                    {
+                        "mRender": function (data, type, row) {
+                            return "<a href='/bucket_content/" + data + "'>Content</a>"
+                        },
+                        "aTargets": [2], "width": "20%"}
+                ]
+            })
+        })
+    </script>
+{% endblock %}

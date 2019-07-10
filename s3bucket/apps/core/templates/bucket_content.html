@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+{% endblock %}
+
+
+{% block content_wrapper %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="bucket_datatable">
+                                    <thead>
+                                    <tr>
+                                        <th>Filename</th>
+                                        <th>Last modified</th>
+                                        <th>Last modify action</th>
+                                        <th>Details</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        var bucket_id = {{ bucket_id }}
+        $(document).ready(function () {
+            $('#bucket_datatable').dataTable({
+                "bServerSide": true,
+                "ajax": `/ajax/bucket_content/${bucket_id}`,
+                "bProcessing": true,
+                "bSortable": false,
+                "bSearch": false,
+                "ordering": false,
+                "sDom": 'lrtip',
+                "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+                "iDisplayLength": 10,
+                "aoColumnDefs": [
+                    {"aTargets": [0], "width": "50%"},
+                    {"aTargets": [1], "width": "20%"},
+                    {"aTargets": [2], "width": "15%"},
+                    {
+                        "mRender": function (data, type, row) {
+                            return "<a href='/content_history/" + data + "'>History</a>"
+                        },
+                        "aTargets": [3], "width": "15%"}
+                ]
+            })
+        })
+    </script>
+{% endblock %}

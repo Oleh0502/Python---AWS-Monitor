@@ -175,3 +175,4 @@ gen### VirtualEnv template
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+/celerybeat.pid

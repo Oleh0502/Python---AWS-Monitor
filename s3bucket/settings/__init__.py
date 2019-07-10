@@ -5,4 +5,6 @@ include(
     'apps.py',
     'database.py',
     'auth.py',
+    'credentials.py',
+    'celery.py'
 )

@@ -1,0 +1,35 @@
+{% extends 'adminlte/base.html' %}
+{% load static %}
+{% block title %}S3 Buckets{% endblock %}
+{% block meta %}
+    <meta name="theme-color" content="#f39c12"/>
+{% endblock meta %}
+{% block content %}
+{% endblock %}
+
+{% block nav_header %}
+    {% include 'main_header.html' %}
+{% endblock %}
+
+{% block body_class %}
+    {% block bodyclass %}skin-green sidebar-mini sidebar-collapse{% endblock %}
+{% endblock %}
+
+{% block nav_sidebar %}
+    {% include "sidebar_menu.html" %}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        var links = {
+            dashboard: "{% url 'core:home' %}",
+        };
+        var username = '{{ user.username }}';
+
+    </script>
+{% endblock %}
+
+{% block nav_footer %}
+    {% include 'main_footer.html' %}
+{% endblock %}

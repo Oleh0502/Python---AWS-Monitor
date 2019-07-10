@@ -1,0 +1,2 @@
+class BucketReadError(BaseException):
+    pass

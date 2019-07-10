@@ -1,0 +1,8 @@
+{% extends 'adminlte/lib/_main_header.html' %}
+{% load static %}
+{% block logo %}
+<a href="{% block logo_href %}/{% endblock %}" class="logo">
+    <span class="logo-mini">{% block logo_text_small %}<b>S3B</b>{% endblock %}</span>
+    <span class="logo-lg">{% block logo_text %}<b>S3 Bucket</b>{% endblock %}</span>
+</a>
+{% endblock %}
