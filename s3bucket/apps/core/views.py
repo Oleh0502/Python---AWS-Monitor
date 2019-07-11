@@ -25,7 +25,7 @@ class BucketList(View):
         response['iTotalRecords'] = buckets.count()
         for bucket in buckets[start: start + length]:
             response['aaData'].append(
-                [bucket.name, bucket.public, bucket.id]
+                [bucket.name, bucket.public, bucket.content.all().count(), bucket.id]
             )
         return HttpResponse(json.dumps(response))
 
@@ -34,7 +34,7 @@ class BucketContentView(View):
     template_name = "bucket_content.html"
 
     def get(self, request, bucket_id):
-        return render(request, self.template_name, context={"bucket_id": bucket_id})
+        return render(request, self.template_name, context={"bucket": Bucket.objects.get(id=bucket_id)})
 
 
 class BucketContentList(View):

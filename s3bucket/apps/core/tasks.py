@@ -6,18 +6,18 @@ from s3bucket.celery import app
 
 
 @app.task
-def update_bucket():
-    current_time = timezone.now()
-    buckets = Bucket.objects.filter(public=True)
-    for bucket in buckets:
-        if bucket.update_every and current_time.minute % bucket.update_every == 0:
-            process_bucket(bucket).delay()
-
-
-@app.task
 def process_bucket(bucket: Bucket):
     try:
         BucketParser(bucket).main()
     except Exception:
         print(f'Error updating bucket {bucket.name}')
         return
+
+
+@app.task
+def update_bucket():
+    current_time = timezone.now()
+    buckets = Bucket.objects.filter(public=True)
+    for bucket in buckets:
+        if bucket.update_every and current_time.minute % bucket.update_every == 0:
+            process_bucket.delay(bucket)

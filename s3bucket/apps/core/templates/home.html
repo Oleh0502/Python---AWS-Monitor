@@ -20,6 +20,7 @@
                                     <tr>
                                         <th>Bucket Name</th>
                                         <th>Active</th>
+                                        <th>Count of files</th>
                                         <th>Details</th>
                                     </tr>
                                     </thead>
@@ -53,7 +54,7 @@
                         "mRender": function (data, type, row) {
                             return "<b>" + data + "</b>"
                         },
-                        "aTargets": [0], "width": "60%"},
+                        "aTargets": [0], "width": "70%"},
                     {
                         "mRender": function (data, type, row) {
                             if (data) {
@@ -64,12 +65,13 @@
                             }
                             return row.status_filter
                         },
-                        "aTargets": [1], "width": "20%"},
+                        "aTargets": [1], "width": "10%"},
+                    {"aTargets": [2], "width": "10%"},
                     {
                         "mRender": function (data, type, row) {
                             return "<a href='/bucket_content/" + data + "'>Content</a>"
                         },
-                        "aTargets": [2], "width": "20%"}
+                        "aTargets": [3], "width": "10%"}
                 ]
             })
         })
