@@ -7,9 +7,17 @@ from s3bucket.celery import app
 
 @app.task
 def update_bucket():
-    print("Update buckets")
     current_time = timezone.now()
     buckets = Bucket.objects.filter(public=True)
     for bucket in buckets:
         if bucket.update_every and current_time.minute % bucket.update_every == 0:
-            BucketParser(bucket).main()
+            process_bucket(bucket).delay()
+
+
+@app.task
+def process_bucket(bucket: Bucket):
+    try:
+        BucketParser(bucket).main()
+    except Exception:
+        print(f'Error updating bucket {bucket.name}')
+        return

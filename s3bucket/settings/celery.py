@@ -14,14 +14,19 @@ CELERY_IGNORE_RESULT = True
 CELERY_TASK_RESULT_EXPIRES = 30
 
 
-CELERY_DEFAULT_QUEUE = 'celery'
-CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
-CELERY_DEFAULT_ROUTING_KEY = 'celery'
+CELERY_QUEUES = (
+    Queue('scheduler', Exchange('scheduler'), 'scheduler'),
+    Queue('process', Exchange('process'), 'process'),
+)
 
 CELERY_ROUTES = {
-    's3bucket.apps.core.tasks.*': {
-        'exchange': 'celery',
-        'routing_key': 'celery'
+    's3bucket.apps.core.tasks.update_bucket': {
+        'exchange': 'scheduler',
+        'routing_key': 'scheduler'
+    },
+    's3bucket.apps.core.tasks.process_bucket': {
+        'exchange': 'process',
+        'routing_key': 'process'
     }
 }
 
