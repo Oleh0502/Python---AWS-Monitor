@@ -56,7 +56,22 @@
                 "aoColumnDefs": [
                     {"aTargets": [0], "width": "50%"},
                     {"aTargets": [1], "width": "20%"},
-                    {"aTargets": [2], "width": "15%"},
+                    {
+                        "mRender": function (data, type, row) {
+                            switch (data) {
+                                case 1:
+                                    row.status_filter ='<p style="color: green">Created</p>';
+                                    break;
+                                case 2:
+                                    row.status_filter ='<p style="color: orange">Updated</p>';
+                                    break;
+                                case 3:
+                                    row.status_filter ='<p style="color: red">Removed</p>';
+                                    break;
+                            }
+                            return row.status_filter
+                        },
+                        "aTargets": [2], "width": "15%"},
                     {
                         "mRender": function (data, type, row) {
                             return "<a href='/content_history/" + data + "'>History</a>"

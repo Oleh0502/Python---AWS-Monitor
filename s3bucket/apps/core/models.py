@@ -24,6 +24,7 @@ class BucketContent(models.Model):
     last_modified = models.DateTimeField(null=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
+    removed = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('e_tag', 'name')

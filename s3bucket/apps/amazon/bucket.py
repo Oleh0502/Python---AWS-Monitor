@@ -9,6 +9,7 @@ class BucketParser:
     def __init__(self, bucket: Bucket):
         self.bucket = bucket
         self.s3 = self.init_boto3()
+        self.existed_files = []
 
     @staticmethod
     def init_boto3():
@@ -18,6 +19,7 @@ class BucketParser:
         bucket = self.s3.Bucket(self.bucket.name)
         try:
             for obj in bucket.objects.all():
+                self.existed_files.append(obj.key)
                 content, created = BucketContent.objects.get_or_create(name=obj.key, defaults={
                     "last_modified": obj.last_modified, "bucket": self.bucket, "e_tag": obj.e_tag
                 })
@@ -31,6 +33,7 @@ class BucketParser:
                     content.save('last_modified')
                 else:
                     continue
+            self.check_deleted()
         except ClientError as e:
             if 'AccessDenied' in e.args[0]:
                 self.bucket.public = False
@@ -38,4 +41,9 @@ class BucketParser:
                 return
 
     def check_deleted(self):
-        pass
+        removed_items = BucketContent.objects.filter(bucket=self.bucket, removed=False).exclude(
+            name__in=self.existed_files)
+        for removed_item in removed_items:
+            removed_item.removed = True
+            removed_item.save()
+            ContentHistory.objects.create(content=removed_item, action=ContentHistory.DELETED)

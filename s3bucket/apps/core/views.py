@@ -48,7 +48,7 @@ class BucketContentList(View):
         response['iTotalRecords'] = content.count()
         for obj in content[start: start + length]:
             response['aaData'].append(
-                [obj.name, str(obj.last_modified), obj.history.last().get_action_display(), obj.id]
+                [obj.name, str(obj.last_modified), obj.history.last().action, obj.id]
             )
         return HttpResponse(json.dumps(response))
 
