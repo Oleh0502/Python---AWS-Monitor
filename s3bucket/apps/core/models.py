@@ -1,7 +1,11 @@
+import os
+
 from django.db import models
 from django.forms import model_to_dict
 from django.utils import timezone
 from django_mysql.models import JSONField
+
+from s3bucket.settings.common import MEDIA_ROOT
 
 
 class Bucket(models.Model):
@@ -13,6 +17,8 @@ class Bucket(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+        if not os.path.exists(os.path.join(MEDIA_ROOT, self.name)):
+            os.mkdir(os.path.join(MEDIA_ROOT, self.name))
         self.updated = timezone.now()
         super(Bucket, self).save()
 
@@ -53,3 +59,12 @@ class ContentHistory(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     action = models.IntegerField(choices=ACTION_CHOICE, default=CREATED)
     previous_state = JSONField(null=True, blank=True, default=None)
+
+
+class ContentFile(models.Model):
+    history = models.ForeignKey(ContentHistory, on_delete=models.CASCADE, related_name='files')
+    updated = models.DateTimeField(auto_now_add=True)
+    filepath = models.TextField()
+
+    def get_full_path(self):
+        return os.path.join(MEDIA_ROOT, self.history.content.bucket.name, self.filepath)

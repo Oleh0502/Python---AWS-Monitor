@@ -1,7 +1,10 @@
+import traceback
+
 from django.utils import timezone
 
 from s3bucket.apps.amazon.bucket import BucketParser
-from s3bucket.apps.core.models import Bucket
+from s3bucket.apps.amazon.download import DownloadFromBucket
+from s3bucket.apps.core.models import Bucket, ContentHistory, ContentFile
 from s3bucket.celery import app
 
 
@@ -11,6 +14,16 @@ def process_bucket(bucket: Bucket):
         BucketParser(bucket).main()
     except Exception:
         print(f'Error updating bucket {bucket.name}')
+        return
+
+
+@app.task
+def download_file(content_history: ContentHistory):
+    try:
+        filename = DownloadFromBucket(content_id=content_history.content.id).save_to_file()
+        ContentFile.objects.create(history=content_history, filepath=filename)
+    except Exception:
+        print(traceback.format_exc())
         return
 
 

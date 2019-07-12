@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import View
 
 from s3bucket.apps.amazon.download import DownloadFromBucket
-from s3bucket.apps.core.models import Bucket, BucketContent, ContentHistory
+from s3bucket.apps.core.models import Bucket, BucketContent, ContentHistory, ContentFile
 
 
 class Home(View):
@@ -49,7 +49,7 @@ class BucketContentList(View):
         response['iTotalRecords'] = content.count()
         for obj in content[start: start + length]:
             response['aaData'].append(
-                [obj.name, str(obj.last_modified), obj.history.last().action, obj.id]
+                [obj.name.split('/'), str(obj.last_modified), obj.history.last().action, obj.id]
             )
         return HttpResponse(json.dumps(response))
 
@@ -81,4 +81,10 @@ class ContentHistoryList(View):
 class DownloadFile(View):
 
     def get(self, request, content_id):
-        return DownloadFromBucket(content_id=content_id).request_file()
+        content = ContentFile.objects.filter(history__content_id=content_id).order_by('-updated').first()
+        if not content:
+            return HttpResponse()
+        with open(content.get_full_path(), 'rb') as download:
+            response = HttpResponse(download.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{content.history.content.name}"'
+            return response

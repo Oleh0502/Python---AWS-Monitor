@@ -18,19 +18,22 @@ class BucketParser:
     def main(self):
         bucket = self.s3.Bucket(self.bucket.name)
         try:
+            from s3bucket.apps.core.tasks import download_file
             for obj in bucket.objects.all():
                 self.existed_files.append(obj.key)
                 content, created = BucketContent.objects.get_or_create(name=obj.key, defaults={
                     "last_modified": obj.last_modified, "bucket": self.bucket, "e_tag": obj.e_tag
                 })
                 if created:
-                    ContentHistory.objects.create(content=content, action=ContentHistory.CREATED)
+                    ch = ContentHistory.objects.create(content=content, action=ContentHistory.CREATED)
+                    download_file.delay(ch)
                 elif obj.last_modified != content.last_modified:
                     current_state = {"last_modified": str(obj.last_modified)}
-                    ContentHistory.objects.create(content=content, action=ContentHistory.UPDATED,
-                                                  previous_state=current_state)
+                    ch = ContentHistory.objects.create(content=content, action=ContentHistory.UPDATED,
+                                                       previous_state=current_state)
                     content.last_modified = obj.last_modified
                     content.save('last_modified')
+                    download_file.delay(ch)
                 else:
                     continue
             self.check_deleted()

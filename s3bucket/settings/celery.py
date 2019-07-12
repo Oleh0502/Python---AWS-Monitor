@@ -17,6 +17,7 @@ CELERY_TASK_RESULT_EXPIRES = 30
 CELERY_QUEUES = (
     Queue('scheduler', Exchange('scheduler'), 'scheduler'),
     Queue('process', Exchange('process'), 'process'),
+    Queue('download', Exchange('download'), 'download')
 )
 
 CELERY_ROUTES = {
@@ -27,6 +28,10 @@ CELERY_ROUTES = {
     's3bucket.apps.core.tasks.process_bucket': {
         'exchange': 'process',
         'routing_key': 'process'
+    },
+    's3bucket.apps.core.tasks.download_file': {
+        'exchange': 'download',
+        'routing_key': 'download'
     }
 }
 
@@ -37,3 +42,7 @@ CELERYBEAT_SCHEDULE = {
         'schedule': crontab(minute="*"),
     }
 }
+
+CELERY_IMPORTS = [
+    "s3bucket.apps.core.tasks"
+]
