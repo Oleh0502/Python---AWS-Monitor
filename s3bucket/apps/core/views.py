@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
+from s3bucket.apps.amazon.download import DownloadFromBucket
 from s3bucket.apps.core.models import Bucket, BucketContent, ContentHistory
 
 
@@ -75,3 +76,9 @@ class ContentHistoryList(View):
                  obj.previous_state.get('last_modified', '') if obj.previous_state else '']
             )
         return HttpResponse(json.dumps(response))
+
+
+class DownloadFile(View):
+
+    def get(self, request, content_id):
+        return DownloadFromBucket(content_id=content_id).request_file()

@@ -25,6 +25,7 @@
                                         <th>Last modified</th>
                                         <th>Last modify action</th>
                                         <th>Details</th>
+                                        <th>Download</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -71,12 +72,18 @@
                             }
                             return row.status_filter
                         },
-                        "aTargets": [2], "width": "15%"},
+                        "aTargets": [2], "width": "10%"},
                     {
                         "mRender": function (data, type, row) {
                             return "<a href='/content_history/" + data + "'>History</a>"
                         },
-                        "aTargets": [3], "width": "15%"}
+                        "aTargets": [3], "width": "10%"},
+                    {
+                        "mRender": function (data, type, row) {
+                            return "<a target='__blank' href='/ajax/download/" + row[3] + "'>Download</a>"
+                        },
+                        "aTargets": [4], "width": "10%"
+                    }
                 ]
             })
         })
