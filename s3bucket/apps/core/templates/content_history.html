@@ -21,6 +21,7 @@
                                         <th>Action</th>
                                         <th>Last update</th>
                                         <th>Previous change</th>
+                                        <th>Download</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -51,8 +52,14 @@
                 "iDisplayLength": 10,
                 "aoColumnDefs": [
                     {"aTargets": [0], "width": "50%"},
-                    {"aTargets": [1], "width": "25%"},
-                    {"aTargets": [1], "width": "25%"}
+                    {"aTargets": [1], "width": "20%"},
+                    {"aTargets": [2], "width": "20%"},
+                    {
+                            "mRender": function (data, type, row) {
+                                return "<a target='__blank' href='/ajax/download/history/" + row[3] + "'><i class='fa fa-download'></i> Download</a>"
+                            },
+                            "aTargets": [3], "width": "10%"
+                        }
                 ]
             })
         })

@@ -35,6 +35,10 @@ class BucketContent(models.Model):
     class Meta:
         unique_together = ('e_tag', 'name')
 
+    @property
+    def state(self):
+        return self.history.last().action
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.updated = timezone.now()

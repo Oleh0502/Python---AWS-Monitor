@@ -15,10 +15,23 @@
                     <div class="box">
                         <div class="box-body">
                             <div class="table-responsive">
+                                <div style="display: flex; font-weight: bold;
+                                     position: absolute; padding: 5px 15px;
+                                     left: 250px; width: 500px; border: 2px solid black;
+                                     justify-content: space-between">
+                                    <span style="color: green; margin-right: 25px">Added</span>
+                                    <span style="color: orange; margin-right: 25px">Modified</span>
+                                    <span style="color: black; margin-right: 25px">No change</span>
+                                    <span style="color: red; margin-right: 25px">Removed</span>
+                                </div>
                                 <table class="table table-striped" id="bucket_datatable">
                                     <thead>
                                     <tr>
                                         <th>Bucket Name</th>
+                                        <th>Last 1 Day</th>
+                                        <th>Last 7 Days</th>
+                                        <th>Last 30 Days</th>
+                                        <th>Last 90 Days</th>
                                         <th>Active</th>
                                         <th>Count of files</th>
                                         <th>Details</th>
@@ -54,7 +67,23 @@
                         "mRender": function (data, type, row) {
                             return "<b>" + data + "</b>"
                         },
-                        "aTargets": [0], "width": "70%"},
+                        "aTargets": [0], "width": "20%"},
+                    {"mRender": function (data, type, row) {
+                            return "<b><span style='color: green'>" + row[2].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[2].modified + '</span> <span style=\'margin-left:8px\'>' + row[2].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[2].removed + "</span></b>"
+                        },
+                        "aTargets": [1], "width": "15%"},
+                    {"mRender": function (data, type, row) {
+                            return "<b><span style='color: green'>" + row[3].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[3].modified + '</span>  <span style=\'margin-left:8px\'>' + row[3].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[3].removed + "</span></b>"
+                        },
+                        "aTargets": [2], "width": "15%"},
+                    {"mRender": function (data, type, row) {
+                            return "<b><span style='color: green'>" + row[4].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[4].modified + '</span>  <span style=\'margin-left:8px\'>' + row[4].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[4].removed + "</span></b>"
+                        },
+                        "aTargets": [3], "width": "15%"},
+                    {"mRender": function (data, type, row) {
+                            return "<b><span style='color: green'>" + row[5].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[5].modified + '</span>  <span style=\'margin-left:8px\'>' + row[5].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[5].removed + "</span></b>"
+                        },
+                        "aTargets": [4], "width": "15%"},
                     {
                         "mRender": function (data, type, row) {
                             if (data) {
@@ -65,13 +94,13 @@
                             }
                             return row.status_filter
                         },
-                        "aTargets": [1], "width": "10%"},
-                    {"aTargets": [2], "width": "10%"},
+                        "aTargets": [5], "width": "1%"},
+                    {"aTargets": [6], "width": "12%"},
                     {
                         "mRender": function (data, type, row) {
                             return "<a href='/bucket_content/" + data + "'>Content</a>"
                         },
-                        "aTargets": [3], "width": "10%"}
+                        "aTargets": [7], "width": "10%"}
                 ]
             })
         })
