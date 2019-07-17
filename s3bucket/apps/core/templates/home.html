@@ -14,9 +14,8 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-body">
-                            <div class="table-responsive">
-                                <div style="display: flex; font-weight: bold;
-                                     position: absolute; padding: 5px 15px;
+                            <div style="display: flex; font-weight: bold;
+                                     padding: 5px 15px; margin: 0 auto 25px;
                                      left: 250px; width: 500px; border: 2px solid black;
                                      justify-content: space-between">
                                     <span style="color: green; margin-right: 25px">Added</span>
@@ -24,6 +23,7 @@
                                     <span style="color: black; margin-right: 25px">No change</span>
                                     <span style="color: red; margin-right: 25px">Removed</span>
                                 </div>
+                            <div class="table-responsive">
                                 <table class="table table-striped" id="bucket_datatable">
                                     <thead>
                                     <tr>
@@ -69,19 +69,19 @@
                         },
                         "aTargets": [0], "width": "20%"},
                     {"mRender": function (data, type, row) {
-                            return "<b><span style='color: green'>" + row[2].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[2].modified + '</span> <span style=\'margin-left:8px\'>' + row[2].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[2].removed + "</span></b>"
+                            return get_cell_html(row[2])
                         },
                         "aTargets": [1], "width": "15%"},
                     {"mRender": function (data, type, row) {
-                            return "<b><span style='color: green'>" + row[3].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[3].modified + '</span>  <span style=\'margin-left:8px\'>' + row[3].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[3].removed + "</span></b>"
+                            return get_cell_html(row[3])
                         },
                         "aTargets": [2], "width": "15%"},
                     {"mRender": function (data, type, row) {
-                            return "<b><span style='color: green'>" + row[4].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[4].modified + '</span>  <span style=\'margin-left:8px\'>' + row[4].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[4].removed + "</span></b>"
+                            return get_cell_html(row[4])
                         },
                         "aTargets": [3], "width": "15%"},
                     {"mRender": function (data, type, row) {
-                            return "<b><span style='color: green'>" + row[5].added + '</span>  <span style=\'color: orange; margin-left:8px\'>' + row[5].modified + '</span>  <span style=\'margin-left:8px\'>' + row[5].no_change + '</span> <span style=\'color: red; margin-left:8px\'>' + row[5].removed + "</span></b>"
+                            return get_cell_html(row[5])
                         },
                         "aTargets": [4], "width": "15%"},
                     {
@@ -103,6 +103,17 @@
                         "aTargets": [7], "width": "10%"}
                 ]
             })
-        })
+
+        });
+        function get_cell_html(row) {
+            return "<b><span style='color: green'>" +
+                row.added +
+                '</span>  <span style=\'color: orange; margin-left:8px\'>' +
+                row.modified +
+                '</span> <span style=\'margin-left:8px\'>' +
+                row.no_change +
+                '</span> <span style=\'color: red; margin-left:8px\'>' +
+                row.removed + "</span></b>"
+    }
     </script>
 {% endblock %}

@@ -1,7 +1,8 @@
-from datetime import date, timedelta
+from datetime import timedelta, datetime
 import json
 
-from django.db.models import Q, Count
+import pytz
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
@@ -26,10 +27,10 @@ class BucketList(View):
         response['iTotalDisplayRecords'] = buckets.count()
         response['iTotalRecords'] = buckets.count()
         last = {
-            "day": date.today() - timedelta(days=1),
-            "week": date.today() - timedelta(days=7),
-            "month": date.today() - timedelta(days=30),
-            "three_months": date.today() - timedelta(days=90),
+            "day": self.date_null(datetime.today() - timedelta(days=1)),
+            "week": self.date_null(datetime.today() - timedelta(days=7)),
+            "month": self.date_null(datetime.today() - timedelta(days=30)),
+            "three_months": self.date_null(datetime.today() - timedelta(days=90)),
         }
         for bucket in buckets[start: start + length]:
             files_count = bucket.content.all().count()
@@ -68,6 +69,9 @@ class BucketList(View):
         content_changes['removed'] += content_query.filter(history__action=3).count()
         content_changes['no_change'] += bucket.content.exclude(id__in=content_query).count()
         return content_changes
+
+    def date_null(self, date):
+        return date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=pytz.utc)
 
 
 class BucketContentView(View):
