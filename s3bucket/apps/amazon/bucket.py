@@ -21,8 +21,8 @@ class BucketParser:
             from s3bucket.apps.core.tasks import download_file, send_pushover_notification
             for obj in bucket.objects.all():
                 self.existed_files.append(obj.key)
-                content, created = BucketContent.objects.get_or_create(name=obj.key, defaults={
-                    "last_modified": obj.last_modified, "bucket": self.bucket, "e_tag": obj.e_tag
+                content, created = BucketContent.objects.get_or_create(name=obj.key, bucket=self.bucket, defaults={
+                    "last_modified": obj.last_modified, "e_tag": obj.e_tag
                 })
 
                 if created:

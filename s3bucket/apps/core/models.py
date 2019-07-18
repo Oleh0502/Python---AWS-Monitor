@@ -35,7 +35,7 @@ class BucketContent(models.Model):
     removed = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('e_tag', 'name')
+        unique_together = ('e_tag', 'name', 'bucket')
 
     @property
     def state(self):

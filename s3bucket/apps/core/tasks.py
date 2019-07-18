@@ -14,8 +14,9 @@ from s3bucket.celery import app
 def process_bucket(bucket: Bucket):
     try:
         BucketParser(bucket).main()
-    except Exception as e:
-        print(f'Error updating bucket {bucket.name}. Error: {e}')
+    except Exception:
+        print(f'Error updating bucket {bucket.name}')
+        traceback.print_exc()
         return
 
 
