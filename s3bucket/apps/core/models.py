@@ -16,6 +16,7 @@ class Bucket(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     update_every = models.IntegerField(null=True, blank=True)
+    empty = models.BooleanField(default=False)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

@@ -64,14 +64,13 @@ def send_pushover_notification(notifier_id):
             content = f'BUCKET NAME : {notifier.bucket.name} \nNO FILES IN BUCKET'
         if title and content:
             client.send_message(content, title=title)
-            notifier.finished_at = dt.datetime.utcnow()
             notifier.notification_status = Notifier.PROCESSED
-            notifier.save()
             print('Notification sent')
         else:
-            notifier.finished_at = dt.datetime.utcnow()
             notifier.notification_status = Notifier.CANCELLED
-            notifier.save()
+
+        notifier.finished_at = dt.datetime.utcnow()
+        notifier.save()
     except Exception as e:
         print(e)
         print(f'Error occurs while notifying to user. notifier_id: {notifier_id}')
